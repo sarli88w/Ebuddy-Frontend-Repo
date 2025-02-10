@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import {
-  TextField,
-  Button,
-  Box,
   Typography,
   Container,
   Paper,
 } from "@mui/material";
+import { LoginForm } from "@/components";
 
 export const metadata: Metadata = {
   title: "Frontend Repository - Ebuddy",
@@ -20,31 +18,7 @@ export default function Home() {
         <Typography variant="h5" gutterBottom>
           Login
         </Typography>
-        <form>
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            // value={email}
-            // onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            // value={password}
-            // onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-            Login
-          </Button>
-        </form>
+        <LoginForm />
       </Paper>
     </Container>
   );
