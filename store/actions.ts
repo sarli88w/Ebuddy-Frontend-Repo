@@ -1,19 +1,20 @@
-import { AppDispatch } from "./store";
-import { setUser, setLoading, setError } from "./reducers";
-import { User } from "./types";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { Credential } from "./types";
+import { ApiGetToken, ApiGetAuthProfile } from "@/apis/authApi";
 
-export const fetchUser = (userId: string) => async (dispatch: AppDispatch) => {
-  try {
-    dispatch(setLoading(true));
+export const loginUser = createAsyncThunk(
+  "user/login",
+  async (payload: Credential, thunkAPI) => {
+    try {
+      const { token_type, token_access } = await ApiGetToken(payload);
+      const resAuth = await ApiGetAuthProfile({ token_type, token_access });
 
-    // Simulasi API call
-    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
-    const data: User = await response.json();
-
-    dispatch(setUser(data));
-  } catch (error) {
-    dispatch(setError("Gagal mengambil data pengguna"));
-  } finally {
-    dispatch(setLoading(false));
+      return {
+        token: `${token_type} ${token_access}`,
+        data: resAuth,
+      };
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
   }
-};
+);
